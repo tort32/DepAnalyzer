@@ -36,6 +36,7 @@ namespace DepAnalyzer
 
         public string mName;
         public FileInfo mFile;
+        public string mGUID;
 
         private List<string> mDepGUIDs;
 
@@ -115,9 +116,10 @@ namespace DepAnalyzer
             return mName;
         }
 
-        public Project(string name, string path)
+        public Project(string name, string path, string guid)
         {
             mName = name;
+            mGUID = guid;
             mFile = String.IsNullOrEmpty(path) ? null : new FileInfo(Path.Combine(sSolutionPath, path));
             mDepGUIDs = new List<string>();
             Parent = null;

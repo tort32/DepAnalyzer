@@ -61,11 +61,6 @@ namespace DepAnalyzer
             if(diag.ShowDialog() == DialogResult.OK)
             {
                 SolutionTextBox.Text = diag.FileName;
-
-                // Update settings
-                Settings.Default.SolutionFile = SolutionTextBox.Text;
-                Settings.Default.Save();
-
                 TryParse();
             }
         }
@@ -118,9 +113,14 @@ namespace DepAnalyzer
 
             Program.form.Icon = Resources.tree;
             string solutionSource = SolutionTextBox.Text;
+            bool update = (Settings.Default.SolutionFile == solutionSource);
             string[] solutionLines = File.ReadAllLines(solutionSource);
-            SolutionParser.ParseSolution(solutionLines);
+            SolutionParser.ParseSolution(solutionLines, update);
             UpdateNodeList();
+
+            // Update settings
+            Settings.Default.SolutionFile = SolutionTextBox.Text;
+            Settings.Default.Save();
 
             return true;
         }

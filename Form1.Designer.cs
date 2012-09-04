@@ -82,12 +82,12 @@ namespace DepAnalyzer
             this.GraphContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.copyImageToolStripMenuItem});
             this.GraphContextMenu.Name = "contextMenuStrip1";
-            this.GraphContextMenu.Size = new System.Drawing.Size(144, 26);
+            this.GraphContextMenu.Size = new System.Drawing.Size(139, 26);
             // 
             // copyImageToolStripMenuItem
             // 
             this.copyImageToolStripMenuItem.Name = "copyImageToolStripMenuItem";
-            this.copyImageToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.copyImageToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.copyImageToolStripMenuItem.Text = "Copy Image";
             this.copyImageToolStripMenuItem.Click += new System.EventHandler(this.copyImageToolStripMenuItem_Click);
             // 
@@ -414,11 +414,11 @@ namespace DepAnalyzer
             this.Controls.Add(this.ShowSingleCheckBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.ParseButton);
             this.Controls.Add(this.ProjectTabControl);
-            this.Controls.Add(this.BrowseButton);
             this.Controls.Add(this.SolutionTextBox);
+            this.Controls.Add(this.ParseButton);
             this.Controls.Add(this.ProjectList);
+            this.Controls.Add(this.BrowseButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";

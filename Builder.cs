@@ -322,7 +322,7 @@ namespace DepAnalyzer
         private Thread Worker;
         private BuildHelper buildHelper;
 
-        private Project buildProject = new Project("<Build Log>", String.Empty);
+        private Project buildProject = new Project("<Build Log>", String.Empty, String.Empty);
 
         public bool IsBuilding { get; private set; }
     }

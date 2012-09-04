@@ -25,9 +25,10 @@ namespace DepAnalyzer
             return null;
         }
 
-        public static void ParseSolution(string[] solutionLines)
+        public static void ParseSolution(string[] solutionLines, bool isUpdate = false)
         {
-            ProjTable = new Dictionary<string, Project>();
+            if (ProjTable == null || !isUpdate)
+                ProjTable = new Dictionary<string, Project>();
 
             // parse deps
             Dictionary<string, Project> guidTable = new Dictionary<string, Project>();
@@ -38,6 +39,7 @@ namespace DepAnalyzer
                 string line = rawLine.Trim();
                 if (line.StartsWith("# Visual Studio"))
                 {
+                    // # Visual Studio 2010
                     string[] s1 = line.Split(' ');
                     VSVersion = s1[3];
                 }
@@ -51,7 +53,11 @@ namespace DepAnalyzer
                     string projectName = s2[0].Trim(trim_chars);
                     string projectPath = s2[1].Trim(trim_chars);
                     string projectGUID = s2[2].Trim(trim_chars);
-                    Project proj = new Project(projectName, projectPath);
+                    Project proj = null;
+                    if (isUpdate)
+                        proj = ProjTable.Values.FirstOrDefault(p => p.mGUID == projectGUID);
+                    if(proj == null)
+                        proj = new Project(projectName, projectPath, projectGUID);
                     guidTable[projectGUID] = proj;
                     currentProj = proj;
                     continue;
@@ -94,13 +100,16 @@ namespace DepAnalyzer
             // Resolve deps
             foreach (Project proj in guidTable.Values)
             {
-                string originalName = proj.mName;
-                int index = 0;
-                while (ProjTable.ContainsKey(proj.mName))
+                if (!isUpdate)
                 {
-                    proj.mName = String.Format("{0}[{1}]", originalName, ++index);
+                    string originalName = proj.mName;
+                    int index = 0;
+                    while (ProjTable.ContainsKey(proj.mName))
+                    {
+                        proj.mName = String.Format("{0}[{1}]", originalName, ++index);
+                    }
+                    ProjTable.Add(proj.mName, proj);
                 }
-                ProjTable.Add(proj.mName, proj);
                 proj.ResolveDeps(guidTable);
             }
         }
