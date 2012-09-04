@@ -1,13 +1,31 @@
-1. Parse solution configs
+Minor
+=====
+* Parse solution configs
 - Replace configuration text box with combobox
 
-2. Create main menu
-- move solution opening/reparsing inside
-- add recent files list
+* Build Selected
+- Add option in build context menu
 
-3. Rework tabs
+* Log highlighting
+- "%d>------ Build started: Project: %s, Configuration: %s ------"
+- "fatal error C%d"
+- "fatal error LNK%d"
+
+* Build log tree
+- Accumulate project build log by jobs
+
+Major
+=====
+* Add dependencies from project files
+- xpath: "Project\ItemGroup\ProjectReference\Project"
+
+* Rework tabs
 - Create controls from GraphGenerator, MatrixGenerator, Bulder classes
 - Move view-control parts from Form to new controls
 
-4. Sessions
+* Create main menu
+- move solution opening/reparsing inside
+- add recent files list
+
+* Sessions
 - save/load project statuses from session file
