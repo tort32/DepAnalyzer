@@ -1,0 +1,13 @@
+1. Parse solution configs
+- Replace configuration text box with combobox
+
+2. Create main menu
+- move solution opening/reparsing inside
+- add recent files list
+
+3. Rework tabs
+- Create controls from GraphGenerator, MatrixGenerator, Bulder classes
+- Move view-control parts from Form to new controls
+
+4. Sessions
+- save/load project statuses from session file
