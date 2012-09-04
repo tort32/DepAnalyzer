@@ -25,7 +25,7 @@ namespace DepAnalyzer
             return null;
         }
 
-        public static void ParseSolution(string[] solutionLines, bool isUpdate = false)
+        public static void ParseSolution(string[] solutionLines, bool isUpdate)
         {
             if (ProjTable == null || !isUpdate)
                 ProjTable = new Dictionary<string, Project>();
