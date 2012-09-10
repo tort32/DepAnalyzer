@@ -69,7 +69,7 @@ namespace DepAnalyzer
             orderList.Items.Clear();
             foreach (var proj in projList)
             {
-                var item = new ListViewItem(proj.mName);
+                var item = new ListViewItem(proj.Name);
                 item.StateImageIndex = (int)proj.Status;
                 orderList.Items.Add(item);
                 proj.StatusChanged += OnProjectUpdate;
@@ -149,15 +149,21 @@ namespace DepAnalyzer
             bool successed = true;
             foreach (var proj in projBuilds)
             {
+                if (proj.IsExternal)
+                {
+                    AppendLog(String.Format("Project \"{0}\" skipped as external.", proj.Name));
+                    continue;
+                }
+
                 if (proj.Status == Project.BuildStatus.Success)
                 {
-                    AppendLog(String.Format("Project \"{0}\" skipped as successful.", proj.mName));
+                    AppendLog(String.Format("Project \"{0}\" skipped as successful.", proj.Name));
                     continue;
                 }
 
                 if(proj.ProjectTree.Any(p => p.Status == Project.BuildStatus.Failed))
                 {
-                    AppendLog(String.Format("Project \"{0}\" skipped as unavailable to build due to fails in dependency projects.", proj.mName));
+                    AppendLog(String.Format("Project \"{0}\" skipped as unavailable to build due to fails in dependency projects.", proj.Name));
                     continue;
                 }
 
@@ -173,17 +179,17 @@ namespace DepAnalyzer
                     continue;
                 }
 
-                retCode = buildHelper.RunProcess(proj, devEnvPath, String.Format("\"{0}\" /build \"{1}\" /project \"{2}\"", solutionFile.FullName, solutionConfig, proj.mName));
+                retCode = buildHelper.RunProcess(proj, devEnvPath, String.Format("\"{0}\" /build \"{1}\" /project \"{2}\"", solutionFile.FullName, solutionConfig, proj.Name));
                 if (retCode != 0)
                 {
                     proj.Status = Project.BuildStatus.Failed;
-                    AppendLog(String.Format("Project \"{0}\" build failed.", proj.mName));
+                    AppendLog(String.Format("Project \"{0}\" build failed.", proj.Name));
                     successed = false;
                     continue;
                 }
 
                 proj.Status = Project.BuildStatus.Success;
-                AppendLog(String.Format("Project \"{0}\" build successful.", proj.mName));
+                AppendLog(String.Format("Project \"{0}\" build successful.", proj.Name));
             }
 
             /*
@@ -208,7 +214,7 @@ namespace DepAnalyzer
         private void OnProjectUpdate(object sender, EventArgs e)
         {
             Project proj = (Project)sender;
-            UpdateBuildItem(proj.mName);
+            UpdateBuildItem(proj.Name);
         }
 
         private void UpdateBuildItem(string projName)
@@ -322,7 +328,7 @@ namespace DepAnalyzer
         private Thread Worker;
         private BuildHelper buildHelper;
 
-        private Project buildProject = new Project("<Build Log>", String.Empty, String.Empty);
+        private Project buildProject = new Project("<Build Log>", String.Empty, String.Empty, true);
 
         public bool IsBuilding { get; private set; }
     }

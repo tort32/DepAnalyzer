@@ -34,7 +34,7 @@ namespace DepAnalyzer
             ShowSingleCheckBox.CheckedChanged += checkBox1_CheckedChanged;
             ShowChildrenCheckBox.CheckedChanged += checkBox2_CheckedChanged;
 
-            TryParse();
+            TryParse(false);
         }
 
         private void copyImageToolStripMenuItem_Click(object sender, EventArgs e)
@@ -61,7 +61,7 @@ namespace DepAnalyzer
             if(diag.ShowDialog() == DialogResult.OK)
             {
                 SolutionTextBox.Text = diag.FileName;
-                TryParse();
+                TryParse(true);
             }
         }
 
@@ -80,6 +80,24 @@ namespace DepAnalyzer
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             ParseButton.Enabled = IsSolutionValid(SolutionTextBox.Text);
+        }
+
+        private bool TryParse(bool isUpdate)
+        {
+            if (!IsSolutionValid(SolutionTextBox.Text))
+                return false;
+
+            Program.form.Icon = Resources.tree;
+            string solutionSource = SolutionTextBox.Text;
+            bool update = isUpdate && (Settings.Default.SolutionFile == solutionSource);
+            SolutionParser.ParseSolution(solutionSource, update);
+            UpdateNodeList();
+
+            // Update settings
+            Settings.Default.SolutionFile = SolutionTextBox.Text;
+            Settings.Default.Save();
+
+            return true;
         }
 
         private void UpdateNodeList()
@@ -106,28 +124,9 @@ namespace DepAnalyzer
             }
         }
 
-        private bool TryParse()
-        {
-            if (!IsSolutionValid(SolutionTextBox.Text))
-                return false;
-
-            Program.form.Icon = Resources.tree;
-            string solutionSource = SolutionTextBox.Text;
-            bool update = (Settings.Default.SolutionFile == solutionSource);
-            string[] solutionLines = File.ReadAllLines(solutionSource);
-            SolutionParser.ParseSolution(solutionLines, update);
-            UpdateNodeList();
-
-            // Update settings
-            Settings.Default.SolutionFile = SolutionTextBox.Text;
-            Settings.Default.Save();
-
-            return true;
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
-            TryParse();
+            TryParse(true);
         }
 
         private string[] GetSelectedRoots()

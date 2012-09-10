@@ -41,6 +41,8 @@ namespace DepAnalyzer
 
         private string ProjectStatusColor(Project proj)
         {
+            if (proj.IsExternal)
+                return "lightcyan";
             if (proj.Status == Project.BuildStatus.Wait)
                 return "gray";
             if (proj.Status == Project.BuildStatus.Progress)
@@ -54,6 +56,8 @@ namespace DepAnalyzer
 
         private string GenerateGraphForRoots(string[] rootNames)
         {
+            // DOT language documentation: http://www.graphviz.org/pdf/dotguide.pdf
+
             string codeStr;
             List<string> codeLines = new List<string>();
             List<string> topRoots = new List<string>();
@@ -100,13 +104,16 @@ namespace DepAnalyzer
                 if (signEvent)
                     proj.StatusChanged += OnProjectUpdate;
 
-                string projName = proj.mName;
+                string projName = proj.Name;
                 foreach (Project depProj in proj.DepProjects)
                 {
-                    string depName = depProj.mName;
+                    string depName = depProj.Name;
                     codeStr = String.Format("node[shape=ellipse,style=filled,color={0}];", ProjectStatusColor(depProj));
                     codeLines.Add(codeStr);
-                    codeStr = String.Format("\"{0}\" -> \"{1}\";", projName, depName);
+                    string style = String.Empty;
+                    if (depProj.IsExternal)
+                        style = " [style=dotted]";
+                    codeStr = String.Format("\"{0}\" -> \"{1}\"{2};", projName, depName, style);
                     codeLines.Add(codeStr);
                 }
             }

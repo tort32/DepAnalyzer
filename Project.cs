@@ -19,7 +19,7 @@ namespace DepAnalyzer
         }
         public static bool Has(this List<Project> projects, Project proj)
         {
-            return projects.Exists(p => p.mName == proj.mName);
+            return projects.Exists(p => p.Name == proj.Name);
         }
     }
     internal class Project
@@ -32,13 +32,24 @@ namespace DepAnalyzer
             Failed = 3
         }
 
-        public static string sSolutionPath = String.Empty;
+        public Project(string name, string path, string guid, bool isExternal)
+        {
+            Name = name;
+            GUID = guid;
+            File = String.IsNullOrEmpty(path) ? null : new FileInfo(path);
+            IsExternal = isExternal;
+            Status = BuildStatus.Wait;
+            Log = String.Empty;
 
-        public string mName;
-        public FileInfo mFile;
-        public string mGUID;
+            ClearDepGraph();
+        }
 
-        private List<string> mDepGUIDs;
+        public string Name { get; set; }
+        public FileInfo File { get; private set; }
+        public string GUID { get; private set; }
+        public bool IsExternal { get; private set; }
+
+        private List<string> DepGUIDs { get; set; }
 
         public Project Parent
         {
@@ -113,33 +124,28 @@ namespace DepAnalyzer
 
         public override string ToString()
         {
-            return mName;
+            return Name;
         }
 
-        public Project(string name, string path, string guid)
+        public void ClearDepGraph()
         {
-            mName = name;
-            mGUID = guid;
-            mFile = String.IsNullOrEmpty(path) ? null : new FileInfo(Path.Combine(sSolutionPath, path));
-            mDepGUIDs = new List<string>();
             Parent = null;
             DepProjects = null;
-            Status = BuildStatus.Wait;
-            Log = String.Empty;
+            DepGUIDs = new List<string>();
         }
 
         public void AddDepGUID(string depGUID)
         {
-            if (!mDepGUIDs.Contains(depGUID))
+            if (!DepGUIDs.Contains(depGUID))
             {
-                mDepGUIDs.Add(depGUID);
+                DepGUIDs.Add(depGUID);
             }
         }
 
         public void ResolveDeps(Dictionary<string, Project> guidTable)
         {
             DepProjects = new List<Project>();
-            foreach (string guid in mDepGUIDs)
+            foreach (string guid in DepGUIDs)
             {
                 Project depProj = guidTable[guid];
                 depProj.Parent = this;

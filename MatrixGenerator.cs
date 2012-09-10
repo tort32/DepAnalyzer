@@ -54,7 +54,7 @@ namespace DepAnalyzer
 
             for (int i = 0; i < projs.Length; i++)
             {
-                columns[i + 1] = new DataColumn(projs[i].mName);
+                columns[i + 1] = new DataColumn(projs[i].Name);
                 columns[i + 1].DataType = typeof (DataGridViewTriState);
             }
 
