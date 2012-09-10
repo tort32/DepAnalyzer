@@ -134,7 +134,6 @@
     <Content Include="Resources\process.png" />
     <Content Include="Resources\success.ico" />
     <Content Include="Resources\success.png" />
-    <Content Include="Resources\Test.sln" />
     <Content Include="Resources\tree.ico" />
     <Content Include="Resources\wait.ico" />
     <Content Include="Resources\wait.png" />
