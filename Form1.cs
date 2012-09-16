@@ -26,7 +26,6 @@ namespace DepAnalyzer
             ShowChildrenCheckBox.Checked = Settings.Default.ShowChildNodes;
             BuildButton.Text = "Start";
 
-            graphGenerator = new GraphGenerator(GraphPictureBox);
             matrixGenerator = new MatrixGenerator(MatrixDataGridView);
             builder = new Builder(BuildList, LogCombo, LogTextBox);
 
@@ -35,11 +34,6 @@ namespace DepAnalyzer
             ShowChildrenCheckBox.CheckedChanged += checkBox2_CheckedChanged;
 
             TryParse(false);
-        }
-
-        private void copyImageToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Clipboard.SetImage(GraphPictureBox.Image);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -144,7 +138,7 @@ namespace DepAnalyzer
         {
             string[] rootNames = GetSelectedRoots();
             // update dep graph
-            graphGenerator.GenerateGraphImageForRoots(rootNames);
+            depGraph.GenerateGraphImageForRoots(rootNames);
 
             // update matrix
             matrixGenerator.GenerateTableForRoots(rootNames);
@@ -227,10 +221,6 @@ namespace DepAnalyzer
 
         }*/
 
-        private GraphGenerator graphGenerator;
-        private MatrixGenerator matrixGenerator;
-        private Builder builder;
-
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             builder.StopBuild();
@@ -284,5 +274,8 @@ namespace DepAnalyzer
             if (BuildContextMenu.Items[0].Enabled)
                 showLogToolStripMenuItem_Click(sender, e);
         }
+
+        private MatrixGenerator matrixGenerator;
+        private Builder builder;
     }
 }

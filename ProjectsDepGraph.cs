@@ -1,37 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Drawing;
-using System.IO;
+using System.Data;
+using System.Linq;
+using System.Text;
 using System.Windows.Forms;
+using System.IO;
 
 namespace DepAnalyzer
 {
-    internal class GraphGenerator
+    /// <summary>
+    /// Project dependency graph visualizing control
+    /// Using SolutionParser to access projects
+    /// </summary>
+    public partial class ProjectsDepGraph : UserControl
     {
-        private string[] roots = null;
-        private List<Project> graphProjs = null;
-        private PictureBox picture;
+        private string[] roots; // cache of root nodes for update
+        private List<Project> graphProjs; // list of projects to unsubscribe
 
-        public GraphGenerator(PictureBox pictureBox)
+        public ProjectsDepGraph()
         {
-            picture = pictureBox;
+            InitializeComponent();
+
             roots = null;
             graphProjs = null;
         }
 
+        /// <summary>
+        /// Updates graph image
+        /// </summary>
+        /// <param name="rootNames">Dependency graph source names</param>
         public void GenerateGraphImageForRoots(string[] rootNames)
         {
-            if (picture.InvokeRequired)
+            if (GraphPictureBox.InvokeRequired)
             {
-                picture.Invoke(new MethodInvoker(() => { GenerateGraphImageForRoots(rootNames); }));
+                GraphPictureBox.Invoke(new MethodInvoker(() => { GenerateGraphImageForRoots(rootNames); }));
                 return;
             }
 
             string dotCode = GenerateGraphForRoots(rootNames);
             Image img = GenerateDotGraphImage(dotCode);
-            picture.Image = img;
-            picture.Size = img.Size;
+            GraphPictureBox.Image = img;
+            GraphPictureBox.Size = img.Size;
+            //Size = img.Size;
         }
 
         private void OnProjectUpdate(object sender, EventArgs e)
@@ -64,11 +76,11 @@ namespace DepAnalyzer
 
             // Build graph from roots
             bool signEvent = false;
-            if(roots != rootNames)
+            if (roots != rootNames)
             {
                 signEvent = true;
                 roots = rootNames;
-                if(graphProjs != null)
+                if (graphProjs != null)
                 {
                     foreach (Project proj in graphProjs)
                     {
@@ -139,6 +151,11 @@ namespace DepAnalyzer
             // Convert Stream to Image
             Image image = Image.FromStream(ms, true);
             return image;
+        }
+
+        private void copyImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetImage(GraphPictureBox.Image);
         }
     }
 }

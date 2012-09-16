@@ -29,15 +29,11 @@ namespace DepAnalyzer
 		private void InitializeComponent()
 		{
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("asd", 2);
-            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("asdasdasdasdasd", 1);
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("asdasd", 0);
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("asd", 2);
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("asdasdasdasdasd", 1);
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("asdasd", 0);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.GraphContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.copyImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.GraphPanel = new System.Windows.Forms.Panel();
-            this.GraphPictureBox = new System.Windows.Forms.PictureBox();
             this.ProjectList = new System.Windows.Forms.ListBox();
             this.SolutionTextBox = new System.Windows.Forms.TextBox();
             this.BrowseButton = new System.Windows.Forms.Button();
@@ -55,7 +51,7 @@ namespace DepAnalyzer
             this.label5 = new System.Windows.Forms.Label();
             this.ConfigTextBox = new System.Windows.Forms.TextBox();
             this.BuildList = new System.Windows.Forms.ListView();
-            this.ProjectColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ProjectColumn = new System.Windows.Forms.ColumnHeader();
             this.BuildContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rebuildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,9 +62,7 @@ namespace DepAnalyzer
             this.label3 = new System.Windows.Forms.Label();
             this.ShowSingleCheckBox = new System.Windows.Forms.CheckBox();
             this.ShowChildrenCheckBox = new System.Windows.Forms.CheckBox();
-            this.GraphContextMenu.SuspendLayout();
-            this.GraphPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.GraphPictureBox)).BeginInit();
+            this.depGraph = new DepAnalyzer.ProjectsDepGraph();
             this.ProjectTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -76,41 +70,6 @@ namespace DepAnalyzer
             this.tabPage3.SuspendLayout();
             this.BuildContextMenu.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // GraphContextMenu
-            // 
-            this.GraphContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.copyImageToolStripMenuItem});
-            this.GraphContextMenu.Name = "contextMenuStrip1";
-            this.GraphContextMenu.Size = new System.Drawing.Size(139, 26);
-            // 
-            // copyImageToolStripMenuItem
-            // 
-            this.copyImageToolStripMenuItem.Name = "copyImageToolStripMenuItem";
-            this.copyImageToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-            this.copyImageToolStripMenuItem.Text = "Copy Image";
-            this.copyImageToolStripMenuItem.Click += new System.EventHandler(this.copyImageToolStripMenuItem_Click);
-            // 
-            // GraphPanel
-            // 
-            this.GraphPanel.AutoScroll = true;
-            this.GraphPanel.AutoScrollMargin = new System.Drawing.Size(10, 10);
-            this.GraphPanel.AutoScrollMinSize = new System.Drawing.Size(10, 10);
-            this.GraphPanel.Controls.Add(this.GraphPictureBox);
-            this.GraphPanel.Location = new System.Drawing.Point(6, 6);
-            this.GraphPanel.Name = "GraphPanel";
-            this.GraphPanel.Size = new System.Drawing.Size(830, 649);
-            this.GraphPanel.TabIndex = 1;
-            // 
-            // GraphPictureBox
-            // 
-            this.GraphPictureBox.ContextMenuStrip = this.GraphContextMenu;
-            this.GraphPictureBox.Location = new System.Drawing.Point(3, 3);
-            this.GraphPictureBox.Name = "GraphPictureBox";
-            this.GraphPictureBox.Size = new System.Drawing.Size(251, 163);
-            this.GraphPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.GraphPictureBox.TabIndex = 0;
-            this.GraphPictureBox.TabStop = false;
             // 
             // ProjectList
             // 
@@ -181,7 +140,7 @@ namespace DepAnalyzer
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.Transparent;
-            this.tabPage1.Controls.Add(this.GraphPanel);
+            this.tabPage1.Controls.Add(this.depGraph);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -206,14 +165,14 @@ namespace DepAnalyzer
             this.MatrixDataGridView.AllowUserToAddRows = false;
             this.MatrixDataGridView.AllowUserToDeleteRows = false;
             this.MatrixDataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.MatrixDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.MatrixDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.MatrixDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.MatrixDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
@@ -264,9 +223,9 @@ namespace DepAnalyzer
             this.LogCombo.Name = "LogCombo";
             this.LogCombo.Size = new System.Drawing.Size(409, 21);
             this.LogCombo.TabIndex = 15;
-            this.LogCombo.DropDown += new System.EventHandler(this.LogCombo_DropDown);
             this.LogCombo.SelectedIndexChanged += new System.EventHandler(this.LogCombo_SelectedIndexChanged);
             this.LogCombo.DropDownClosed += new System.EventHandler(this.LogCombo_DropDownClosed);
+            this.LogCombo.DropDown += new System.EventHandler(this.LogCombo_DropDown);
             // 
             // label5
             // 
@@ -289,15 +248,15 @@ namespace DepAnalyzer
             this.BuildList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.ProjectColumn});
             this.BuildList.ContextMenuStrip = this.BuildContextMenu;
-            listViewItem4.StateImageIndex = 0;
-            listViewItem5.Checked = true;
-            listViewItem5.StateImageIndex = 1;
-            listViewItem6.Checked = true;
-            listViewItem6.StateImageIndex = 2;
+            listViewItem1.StateImageIndex = 0;
+            listViewItem2.Checked = true;
+            listViewItem2.StateImageIndex = 1;
+            listViewItem3.Checked = true;
+            listViewItem3.StateImageIndex = 2;
             this.BuildList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem4,
-            listViewItem5,
-            listViewItem6});
+            listViewItem1,
+            listViewItem2,
+            listViewItem3});
             this.BuildList.LargeImageList = this.ProjectStatusImages;
             this.BuildList.Location = new System.Drawing.Point(6, 35);
             this.BuildList.MultiSelect = false;
@@ -308,8 +267,8 @@ namespace DepAnalyzer
             this.BuildList.TabIndex = 12;
             this.BuildList.UseCompatibleStateImageBehavior = false;
             this.BuildList.View = System.Windows.Forms.View.Details;
-            this.BuildList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BuildList_MouseClick);
             this.BuildList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.BuildList_MouseDoubleClick);
+            this.BuildList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BuildList_MouseClick);
             // 
             // ProjectColumn
             // 
@@ -322,19 +281,19 @@ namespace DepAnalyzer
             this.showLogToolStripMenuItem,
             this.rebuildToolStripMenuItem});
             this.BuildContextMenu.Name = "BuildContextMenu";
-            this.BuildContextMenu.Size = new System.Drawing.Size(160, 48);
+            this.BuildContextMenu.Size = new System.Drawing.Size(161, 48);
             // 
             // showLogToolStripMenuItem
             // 
             this.showLogToolStripMenuItem.Name = "showLogToolStripMenuItem";
-            this.showLogToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.showLogToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.showLogToolStripMenuItem.Text = "Show log";
             this.showLogToolStripMenuItem.Click += new System.EventHandler(this.showLogToolStripMenuItem_Click);
             // 
             // rebuildToolStripMenuItem
             // 
             this.rebuildToolStripMenuItem.Name = "rebuildToolStripMenuItem";
-            this.rebuildToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.rebuildToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.rebuildToolStripMenuItem.Text = "Mark for rebuild";
             this.rebuildToolStripMenuItem.Click += new System.EventHandler(this.rebuildToolStripMenuItem_Click);
             // 
@@ -405,6 +364,13 @@ namespace DepAnalyzer
             this.ShowChildrenCheckBox.Text = "Show child nodes";
             this.ShowChildrenCheckBox.UseVisualStyleBackColor = true;
             // 
+            // depGraph
+            // 
+            this.depGraph.Location = new System.Drawing.Point(6, 6);
+            this.depGraph.Name = "depGraph";
+            this.depGraph.Size = new System.Drawing.Size(830, 649);
+            this.depGraph.TabIndex = 1;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -423,11 +389,8 @@ namespace DepAnalyzer
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Solution Dependency Analyzer";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.GraphContextMenu.ResumeLayout(false);
-            this.GraphPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.GraphPictureBox)).EndInit();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.ProjectTabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -442,11 +405,7 @@ namespace DepAnalyzer
 
 		#endregion
 
-		private System.Windows.Forms.PictureBox GraphPictureBox;
-		private System.Windows.Forms.Panel GraphPanel;
-		private System.Windows.Forms.ListBox ProjectList;
-		private System.Windows.Forms.ContextMenuStrip GraphContextMenu;
-		private System.Windows.Forms.ToolStripMenuItem copyImageToolStripMenuItem;
+        private System.Windows.Forms.ListBox ProjectList;
         private System.Windows.Forms.TextBox SolutionTextBox;
         private System.Windows.Forms.Button BrowseButton;
         private System.Windows.Forms.Button ParseButton;
@@ -474,6 +433,7 @@ namespace DepAnalyzer
         private System.Windows.Forms.ToolStripMenuItem rebuildToolStripMenuItem;
         private System.Windows.Forms.ComboBox LogCombo;
         private System.Windows.Forms.ToolStripMenuItem showLogToolStripMenuItem;
+        private ProjectsDepGraph depGraph;
 
 	}
 }
