@@ -29,7 +29,6 @@ namespace DepAnalyzer
 		private void InitializeComponent()
 		{
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("asd", 2);
             System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("asdasdasdasdasd", 1);
             System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("asdasd", 0);
@@ -42,10 +41,9 @@ namespace DepAnalyzer
             this.label2 = new System.Windows.Forms.Label();
             this.ProjectTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.depGraph = new DepAnalyzer.ProjectsDepGraph();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.MatrixDataGridView = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.depMatrix = new DepAnalyzer.ProjectsDepMatrix();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.LogCombo = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -62,11 +60,9 @@ namespace DepAnalyzer
             this.label3 = new System.Windows.Forms.Label();
             this.ShowSingleCheckBox = new System.Windows.Forms.CheckBox();
             this.ShowChildrenCheckBox = new System.Windows.Forms.CheckBox();
-            this.depGraph = new DepAnalyzer.ProjectsDepGraph();
             this.ProjectTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MatrixDataGridView)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.BuildContextMenu.SuspendLayout();
             this.SuspendLayout();
@@ -149,10 +145,18 @@ namespace DepAnalyzer
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Graph";
             // 
+            // depGraph
+            // 
+            this.depGraph.AutoScroll = true;
+            this.depGraph.Location = new System.Drawing.Point(6, 6);
+            this.depGraph.Name = "depGraph";
+            this.depGraph.Size = new System.Drawing.Size(830, 649);
+            this.depGraph.TabIndex = 1;
+            // 
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.Transparent;
-            this.tabPage2.Controls.Add(this.MatrixDataGridView);
+            this.tabPage2.Controls.Add(this.depMatrix);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -160,40 +164,12 @@ namespace DepAnalyzer
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Matrix";
             // 
-            // MatrixDataGridView
+            // depMatrix
             // 
-            this.MatrixDataGridView.AllowUserToAddRows = false;
-            this.MatrixDataGridView.AllowUserToDeleteRows = false;
-            this.MatrixDataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.MatrixDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.MatrixDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.MatrixDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2});
-            this.MatrixDataGridView.Location = new System.Drawing.Point(6, 6);
-            this.MatrixDataGridView.Name = "MatrixDataGridView";
-            this.MatrixDataGridView.ReadOnly = true;
-            this.MatrixDataGridView.Size = new System.Drawing.Size(830, 649);
-            this.MatrixDataGridView.TabIndex = 0;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Column1";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Column2";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
+            this.depMatrix.Location = new System.Drawing.Point(6, 6);
+            this.depMatrix.Name = "depMatrix";
+            this.depMatrix.Size = new System.Drawing.Size(830, 649);
+            this.depMatrix.TabIndex = 0;
             // 
             // tabPage3
             // 
@@ -364,13 +340,6 @@ namespace DepAnalyzer
             this.ShowChildrenCheckBox.Text = "Show child nodes";
             this.ShowChildrenCheckBox.UseVisualStyleBackColor = true;
             // 
-            // depGraph
-            // 
-            this.depGraph.Location = new System.Drawing.Point(6, 6);
-            this.depGraph.Name = "depGraph";
-            this.depGraph.Size = new System.Drawing.Size(830, 649);
-            this.depGraph.TabIndex = 1;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -385,8 +354,9 @@ namespace DepAnalyzer
             this.Controls.Add(this.ParseButton);
             this.Controls.Add(this.ProjectList);
             this.Controls.Add(this.BrowseButton);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Solution Dependency Analyzer";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -394,7 +364,6 @@ namespace DepAnalyzer
             this.ProjectTabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.MatrixDataGridView)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.BuildContextMenu.ResumeLayout(false);
@@ -416,9 +385,6 @@ namespace DepAnalyzer
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.CheckBox ShowSingleCheckBox;
         private System.Windows.Forms.CheckBox ShowChildrenCheckBox;
-        private System.Windows.Forms.DataGridView MatrixDataGridView;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Column2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TextBox LogTextBox;
         private System.Windows.Forms.Label label4;
@@ -434,6 +400,7 @@ namespace DepAnalyzer
         private System.Windows.Forms.ComboBox LogCombo;
         private System.Windows.Forms.ToolStripMenuItem showLogToolStripMenuItem;
         private ProjectsDepGraph depGraph;
+        private ProjectsDepMatrix depMatrix;
 
 	}
 }

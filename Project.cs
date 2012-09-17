@@ -72,17 +72,32 @@ namespace DepAnalyzer
 
         public List<Project> ProjectTree
         {
-            // Return all dependency projects from tree including the root (this)
+            // Return all dependency projects from tree including current root node (this)
             get
             {
                 List<Project> projs = new List<Project>();
                 projs.Add(this);
                 foreach (Project depProj in DepProjects)
                 {
-                    foreach (Project depDepPeoj in depProj.ProjectTree)
+                    foreach (Project depDepProj in depProj.ProjectTree)
                     {
-                        projs.AddUnique(depDepPeoj);
+                        projs.AddUnique(depDepProj);
                     }
+                }
+                return projs;
+            }
+        }
+
+        public List<Project> Parents
+        {
+            // Return all dependency parents excluding current node (this)
+            get
+            {
+                List<Project> projs = new List<Project>();
+                if (HasParent)
+                {
+                    projs.Add(Parent);
+                    projs.AddRange(Parent.Parents);
                 }
                 return projs;
             }

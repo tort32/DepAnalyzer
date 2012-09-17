@@ -26,7 +26,6 @@ namespace DepAnalyzer
             ShowChildrenCheckBox.Checked = Settings.Default.ShowChildNodes;
             BuildButton.Text = "Start";
 
-            matrixGenerator = new MatrixGenerator(MatrixDataGridView);
             builder = new Builder(BuildList, LogCombo, LogTextBox);
 
             SolutionTextBox.TextChanged += textBox1_TextChanged;
@@ -141,7 +140,7 @@ namespace DepAnalyzer
             depGraph.GenerateGraphImageForRoots(rootNames);
 
             // update matrix
-            matrixGenerator.GenerateTableForRoots(rootNames);
+            depMatrix.GenerateTableForRoots(rootNames);
 
             // update builder
             builder.GenerateOrderListForRoots(rootNames);
@@ -275,7 +274,6 @@ namespace DepAnalyzer
                 showLogToolStripMenuItem_Click(sender, e);
         }
 
-        private MatrixGenerator matrixGenerator;
         private Builder builder;
     }
 }
