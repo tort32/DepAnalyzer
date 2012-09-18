@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DepAnalyzer", "DepAnalyzer10.csproj", "{0ED89CA3-9361-4E74-BF8B-155E6626A369}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DepAnalyzer10", "DepAnalyzer10.csproj", "{0ED89CA3-9361-4E74-BF8B-155E6626A369}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
