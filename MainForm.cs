@@ -26,7 +26,7 @@ namespace DepAnalyzer
             ShowChildrenCheckBox.Checked = Settings.Default.ShowChildNodes;
             BuildButton.Text = "Start";
 
-            builder = new Builder(BuildList, LogCombo, LogTextBox);
+            builder = new Builder(BuildList, LogCombo, LogTextBoxRich);
 
             SolutionTextBox.TextChanged += textBox1_TextChanged;
             ShowSingleCheckBox.CheckedChanged += checkBox1_CheckedChanged;

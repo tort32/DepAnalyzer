@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,48 @@ using System.Threading;
 
 namespace DepAnalyzer
 {
+    internal static class RtfUtils
+    {
+        private static RichTextBox mRtb = new RichTextBox();
+
+        public static string GetLogFormatted(string logText)
+        {
+            mRtb.Text = logText;
+            foreach (string line in mRtb.Lines)
+            {
+                if (line.StartsWith("====="))
+                {
+                    int startindex = mRtb.Find(line);
+                    mRtb.Select(startindex, line.Length);
+                    mRtb.SelectionFont = new Font(mRtb.SelectionFont, FontStyle.Bold);
+                    //rtb.SelectionColor = Color.Red;
+                }
+            }
+            return mRtb.Rtf;
+        }
+
+        public static void AppendRtf(this RichTextBox rtb, string rtfText)
+        {
+            const string searchText = "\\par\r\n}";
+            const string removeText = "\\par";
+            rtb.Select(rtb.TextLength, 0);
+            rtb.SelectedRtf = rtfText;
+            int removeIndex = rtb.Rtf.LastIndexOf(searchText, StringComparison.InvariantCulture);
+            if (removeIndex != -1)
+                rtb.Rtf = rtb.Rtf.Remove(removeIndex, removeText.Length);
+        }
+
+        public static string MergeRtf(string rtf1, string rtf2)
+        {
+            mRtb.Rtf = rtf1;
+            mRtb.AppendRtf(rtf2);
+            return mRtb.Rtf;
+        }
+    }
+
     internal class Builder
     {
-        public Builder(ListView orderListView, ComboBox logComboBox, TextBox logTextBox)
+        public Builder(ListView orderListView, ComboBox logComboBox, RichTextBox logTextBox)
         {
             orderList = orderListView;
             logCombo = logComboBox;
@@ -134,18 +174,11 @@ namespace DepAnalyzer
         {
             IsBuilding = true;
             buildHelper = new BuildHelper(this);
+
             buildProject.ClearLog();
             AppendLog("Build started");
-            int retCode = 0;
 
-            /*retCode = buildHelper.RunProcess(Environment.GetEnvironmentVariable("VS100COMNTOOLS") + "vsvars32.bat");
-            if (retCode != 0)
-                Log(String.Format("Error code: {0}", retCode));*/
-            /*foreach (var proj in projBuilds)
-            {
-                proj.Status = Project.BuildStatus.Wait;
-                UpdateItem(proj);
-            }*/
+            int retCode = 0;
             bool successed = true;
             foreach (var proj in projBuilds)
             {
@@ -192,20 +225,7 @@ namespace DepAnalyzer
                 AppendLog(String.Format("Project \"{0}\" build successful.", proj.Name));
             }
 
-            /*
-            buildHelper.AddStep("@echo off");
-            string devEnvPath = Environment.GetEnvironmentVariable("VS100COMNTOOLS") + "..\\IDE\\devenv.exe";
-            //buildHelper.AddStep("call \"%VS100COMNTOOLS%vsvars32\"");
-            buildHelper.AddStep("@echo on");
-            buildHelper.AddStep("echo 1");
-            buildHelper.AddStep("ping localhost");
-            //buildHelper.AddStep("ping 8.8.8.8");
-            */
-
-            //buildHelper.Run();
-
             buildHelper = null;
-
             OnBuildComplete(successed);
         }
 
@@ -256,18 +276,38 @@ namespace DepAnalyzer
 
         private void UpdateLog(object sender, EventArgs e)
         {
+            if (log.IsDisposed)
+                return;
+
             if (log.InvokeRequired)
             {
                 log.Invoke(new MethodInvoker(() => UpdateLog(sender, e)));
                 return;
             }
 
+            // Update current log
             var proj = (Project)sender;
             var selectedProj = (Project)logCombo.SelectedItem;
             if(proj == selectedProj)
             {
-                log.Text = proj.Log;
-                log.SelectionStart = log.Text.Length;
+                string appendText = String.Empty;
+                string fullText = proj.GetLogFormatted(out appendText);
+                if(e == null) // Full text update
+                {
+                    log.Rtf = fullText;
+
+                    log.SelectionStart = 0;
+                }
+                else // Append text update
+                {
+                    log.AppendRtf(appendText);
+                    //log.Rtf = fullText;
+
+                    //log.Select(log.TextLength == 0 ? 0 : log.TextLength - 1, 0);
+                    //log.SelectedRtf = appendText;
+
+                    log.SelectionStart = log.TextLength;
+                }
                 log.ScrollToCaret();
             }
         }
@@ -320,7 +360,7 @@ namespace DepAnalyzer
         private List<Project> projBuilds; // building projects
         private ListView orderList;
         private ComboBox logCombo;
-        private TextBox log;
+        private RichTextBox log;
         private FileInfo solutionFile;
         private string solutionConfig;
         private string workDir;

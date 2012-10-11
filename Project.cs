@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Windows.Forms;
 
 namespace DepAnalyzer
 {
@@ -41,6 +42,9 @@ namespace DepAnalyzer
             Status = BuildStatus.Wait;
             Log = String.Empty;
 
+            mPreviousLog = String.Empty;
+            mPreviousLogFormatted = String.Empty;
+
             ClearDepGraph();
         }
 
@@ -50,6 +54,10 @@ namespace DepAnalyzer
         public bool IsExternal { get; private set; }
 
         private List<string> DepGUIDs { get; set; }
+        private string mPreviousLog;
+        private string mPreviousLogFormatted;
+
+        private static RichTextBox rtb = new RichTextBox();
 
         public Project Parent
         {
@@ -131,6 +139,29 @@ namespace DepAnalyzer
         public event EventHandler LogChanged;
 
         public string Log { get; private set; }
+
+        public string GetLogFormatted(out string appending)
+        {
+            // If not found previous log in current log then reset cache
+            if (!Log.StartsWith(mPreviousLog))
+            {
+                mPreviousLog = String.Empty;
+                mPreviousLogFormatted = String.Empty;
+            }
+
+            // Find appending text (diff)
+            string logAdd = Log.Substring(mPreviousLog.Length, Log.Length - mPreviousLog.Length);
+
+            // Format appending text
+            string logAddFormatted = RtfUtils.GetLogFormatted(logAdd);
+
+            // Append formatted appending text to previous formatted text and cache results
+            mPreviousLog = Log;
+            mPreviousLogFormatted = RtfUtils.MergeRtf(mPreviousLogFormatted, logAddFormatted);
+            appending = logAddFormatted;
+
+            return mPreviousLogFormatted;
+        }
 
         public bool HasLog
         {

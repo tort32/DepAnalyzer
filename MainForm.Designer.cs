@@ -41,15 +41,13 @@ namespace DepAnalyzer
             this.label2 = new System.Windows.Forms.Label();
             this.ProjectTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.depGraph = new DepAnalyzer.ProjectsDepGraph();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.depMatrix = new DepAnalyzer.ProjectsDepMatrix();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.LogCombo = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.ConfigTextBox = new System.Windows.Forms.TextBox();
             this.BuildList = new System.Windows.Forms.ListView();
-            this.ProjectColumn = new System.Windows.Forms.ColumnHeader();
+            this.ProjectColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.BuildContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rebuildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,6 +58,9 @@ namespace DepAnalyzer
             this.label3 = new System.Windows.Forms.Label();
             this.ShowSingleCheckBox = new System.Windows.Forms.CheckBox();
             this.ShowChildrenCheckBox = new System.Windows.Forms.CheckBox();
+            this.LogTextBoxRich = new System.Windows.Forms.RichTextBox();
+            this.depGraph = new DepAnalyzer.ProjectsDepGraph();
+            this.depMatrix = new DepAnalyzer.ProjectsDepMatrix();
             this.ProjectTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -145,14 +146,6 @@ namespace DepAnalyzer
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Graph";
             // 
-            // depGraph
-            // 
-            this.depGraph.AutoScroll = true;
-            this.depGraph.Location = new System.Drawing.Point(6, 6);
-            this.depGraph.Name = "depGraph";
-            this.depGraph.Size = new System.Drawing.Size(830, 649);
-            this.depGraph.TabIndex = 1;
-            // 
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.Transparent;
@@ -164,16 +157,10 @@ namespace DepAnalyzer
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Matrix";
             // 
-            // depMatrix
-            // 
-            this.depMatrix.Location = new System.Drawing.Point(6, 6);
-            this.depMatrix.Name = "depMatrix";
-            this.depMatrix.Size = new System.Drawing.Size(830, 649);
-            this.depMatrix.TabIndex = 0;
-            // 
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.Color.Transparent;
+            this.tabPage3.Controls.Add(this.LogTextBoxRich);
             this.tabPage3.Controls.Add(this.LogCombo);
             this.tabPage3.Controls.Add(this.label5);
             this.tabPage3.Controls.Add(this.ConfigTextBox);
@@ -199,9 +186,9 @@ namespace DepAnalyzer
             this.LogCombo.Name = "LogCombo";
             this.LogCombo.Size = new System.Drawing.Size(409, 21);
             this.LogCombo.TabIndex = 15;
+            this.LogCombo.DropDown += new System.EventHandler(this.LogCombo_DropDown);
             this.LogCombo.SelectedIndexChanged += new System.EventHandler(this.LogCombo_SelectedIndexChanged);
             this.LogCombo.DropDownClosed += new System.EventHandler(this.LogCombo_DropDownClosed);
-            this.LogCombo.DropDown += new System.EventHandler(this.LogCombo_DropDown);
             // 
             // label5
             // 
@@ -243,8 +230,8 @@ namespace DepAnalyzer
             this.BuildList.TabIndex = 12;
             this.BuildList.UseCompatibleStateImageBehavior = false;
             this.BuildList.View = System.Windows.Forms.View.Details;
-            this.BuildList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.BuildList_MouseDoubleClick);
             this.BuildList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BuildList_MouseClick);
+            this.BuildList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.BuildList_MouseDoubleClick);
             // 
             // ProjectColumn
             // 
@@ -257,19 +244,19 @@ namespace DepAnalyzer
             this.showLogToolStripMenuItem,
             this.rebuildToolStripMenuItem});
             this.BuildContextMenu.Name = "BuildContextMenu";
-            this.BuildContextMenu.Size = new System.Drawing.Size(161, 48);
+            this.BuildContextMenu.Size = new System.Drawing.Size(160, 48);
             // 
             // showLogToolStripMenuItem
             // 
             this.showLogToolStripMenuItem.Name = "showLogToolStripMenuItem";
-            this.showLogToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.showLogToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.showLogToolStripMenuItem.Text = "Show log";
             this.showLogToolStripMenuItem.Click += new System.EventHandler(this.showLogToolStripMenuItem_Click);
             // 
             // rebuildToolStripMenuItem
             // 
             this.rebuildToolStripMenuItem.Name = "rebuildToolStripMenuItem";
-            this.rebuildToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.rebuildToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.rebuildToolStripMenuItem.Text = "Mark for rebuild";
             this.rebuildToolStripMenuItem.Click += new System.EventHandler(this.rebuildToolStripMenuItem_Click);
             // 
@@ -284,12 +271,15 @@ namespace DepAnalyzer
             // 
             // LogTextBox
             // 
+            this.LogTextBox.BackColor = System.Drawing.SystemColors.Window;
+            this.LogTextBox.HideSelection = false;
             this.LogTextBox.Location = new System.Drawing.Point(162, 35);
             this.LogTextBox.MaxLength = 10240000;
             this.LogTextBox.Multiline = true;
             this.LogTextBox.Name = "LogTextBox";
+            this.LogTextBox.ReadOnly = true;
             this.LogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.LogTextBox.Size = new System.Drawing.Size(674, 620);
+            this.LogTextBox.Size = new System.Drawing.Size(69, 620);
             this.LogTextBox.TabIndex = 11;
             // 
             // label4
@@ -340,6 +330,34 @@ namespace DepAnalyzer
             this.ShowChildrenCheckBox.Text = "Show child nodes";
             this.ShowChildrenCheckBox.UseVisualStyleBackColor = true;
             // 
+            // LogTextBoxRich
+            // 
+            this.LogTextBoxRich.BackColor = System.Drawing.SystemColors.Window;
+            this.LogTextBoxRich.DetectUrls = false;
+            this.LogTextBoxRich.HideSelection = false;
+            this.LogTextBoxRich.Location = new System.Drawing.Point(237, 35);
+            this.LogTextBoxRich.Name = "LogTextBoxRich";
+            this.LogTextBoxRich.ReadOnly = true;
+            this.LogTextBoxRich.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.LogTextBoxRich.Size = new System.Drawing.Size(599, 620);
+            this.LogTextBoxRich.TabIndex = 16;
+            this.LogTextBoxRich.Text = "";
+            // 
+            // depGraph
+            // 
+            this.depGraph.AutoScroll = true;
+            this.depGraph.Location = new System.Drawing.Point(6, 6);
+            this.depGraph.Name = "depGraph";
+            this.depGraph.Size = new System.Drawing.Size(830, 649);
+            this.depGraph.TabIndex = 1;
+            // 
+            // depMatrix
+            // 
+            this.depMatrix.Location = new System.Drawing.Point(6, 6);
+            this.depMatrix.Name = "depMatrix";
+            this.depMatrix.Size = new System.Drawing.Size(830, 649);
+            this.depMatrix.TabIndex = 0;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -359,8 +377,8 @@ namespace DepAnalyzer
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Solution Dependency Analyzer";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ProjectTabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -401,6 +419,7 @@ namespace DepAnalyzer
         private System.Windows.Forms.ToolStripMenuItem showLogToolStripMenuItem;
         private ProjectsDepGraph depGraph;
         private ProjectsDepMatrix depMatrix;
+        private System.Windows.Forms.RichTextBox LogTextBoxRich;
 
 	}
 }
