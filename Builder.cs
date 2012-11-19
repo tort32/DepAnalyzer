@@ -1,30 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace DepAnalyzer
 {
     internal static class RtfUtils
     {
-        private static RichTextBox mRtb = new RichTextBox();
+        private static readonly RichTextBox mRtb = new RichTextBox();
+        private static readonly Regex mBuildExp = new Regex(@"^=====", RegexOptions.Compiled);
+        private static readonly Regex mErrorExp = new Regex(@"fatal error (C|LNK)\d+", RegexOptions.Compiled);
+        private static readonly Regex mProjectExp = new Regex(@"^\d+>------", RegexOptions.Compiled);
 
         public static string GetLogFormatted(string logText)
         {
             mRtb.Text = logText;
             foreach (string line in mRtb.Lines)
             {
-                if (line.StartsWith("====="))
+                if (mBuildExp.IsMatch(line))
                 {
                     int startindex = mRtb.Find(line);
                     mRtb.Select(startindex, line.Length);
                     mRtb.SelectionFont = new Font(mRtb.SelectionFont, FontStyle.Bold);
-                    //rtb.SelectionColor = Color.Red;
+                }
+                else if(mErrorExp.IsMatch(line))
+                {
+                    int startindex = mRtb.Find(line);
+                    mRtb.Select(startindex, line.Length);
+                    mRtb.SelectionFont = new Font(mRtb.SelectionFont, FontStyle.Bold);
+                    mRtb.SelectionColor = Color.Red;
+                }
+                else if(mProjectExp.IsMatch(line))
+                {
+                    int startindex = mRtb.Find(line);
+                    mRtb.Select(startindex, line.Length);
+                    mRtb.SelectionFont = new Font(mRtb.SelectionFont, FontStyle.Bold);
                 }
             }
             return mRtb.Rtf;
@@ -39,6 +53,7 @@ namespace DepAnalyzer
             int removeIndex = rtb.Rtf.LastIndexOf(searchText, StringComparison.InvariantCulture);
             if (removeIndex != -1)
                 rtb.Rtf = rtb.Rtf.Remove(removeIndex, removeText.Length);
+            rtb.Select(rtb.TextLength, 0);
         }
 
         public static string MergeRtf(string rtf1, string rtf2)
@@ -290,23 +305,19 @@ namespace DepAnalyzer
             var selectedProj = (Project)logCombo.SelectedItem;
             if(proj == selectedProj)
             {
-                string appendText = String.Empty;
+                string appendText;
                 string fullText = proj.GetLogFormatted(out appendText);
                 if(e == null) // Full text update
                 {
                     log.Rtf = fullText;
 
-                    log.SelectionStart = 0;
+                    log.Select(0, 0); // log.SelectionStart = 0;
                 }
                 else // Append text update
                 {
                     log.AppendRtf(appendText);
-                    //log.Rtf = fullText;
 
-                    //log.Select(log.TextLength == 0 ? 0 : log.TextLength - 1, 0);
-                    //log.SelectedRtf = appendText;
-
-                    log.SelectionStart = log.TextLength;
+                    //log.SelectionStart = log.TextLength;
                 }
                 log.ScrollToCaret();
             }

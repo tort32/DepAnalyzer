@@ -57,8 +57,6 @@ namespace DepAnalyzer
         private string mPreviousLog;
         private string mPreviousLogFormatted;
 
-        private static RichTextBox rtb = new RichTextBox();
-
         public Project Parent
         {
             get; private set;
@@ -113,18 +111,18 @@ namespace DepAnalyzer
 
         public event EventHandler StatusChanged;
 
-        private BuildStatus status;
+        private BuildStatus mStatus;
         public BuildStatus Status
         {
             get
             {
-                return status;
+                return mStatus;
             }
             set
             {
-                if (status != value)
+                if (mStatus != value)
                 {
-                    status = value;
+                    mStatus = value;
                     if (StatusChanged != null)
                         StatusChanged(this, EventArgs.Empty);
                 }
