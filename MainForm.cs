@@ -202,24 +202,6 @@ namespace DepAnalyzer
             }
         }
 
-        /*public void ClearBuildLog()
-        {
-            LogTextBox.Clear();
-        }*/
-
-        /*public void UpdateBuildLog(string data)
-        {
-            if (LogTextBox.InvokeRequired)
-            {
-                LogTextBox.Invoke(new MethodInvoker(() => { UpdateBuildLog(data); }));
-                return;
-            }
-
-            LogTextBox.AppendText(data + "\r\n");
-            LogTextBox.ScrollToCaret();
-
-        }*/
-
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             builder.StopBuild();

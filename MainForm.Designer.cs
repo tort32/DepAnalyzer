@@ -41,8 +41,11 @@ namespace DepAnalyzer
             this.label2 = new System.Windows.Forms.Label();
             this.ProjectTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.depGraph = new DepAnalyzer.ProjectsDepGraph();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.depMatrix = new DepAnalyzer.ProjectsDepMatrix();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.LogTextBoxRich = new System.Windows.Forms.RichTextBox();
             this.LogCombo = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.ConfigTextBox = new System.Windows.Forms.TextBox();
@@ -52,15 +55,11 @@ namespace DepAnalyzer
             this.showLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rebuildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ProjectStatusImages = new System.Windows.Forms.ImageList(this.components);
-            this.LogTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.BuildButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.ShowSingleCheckBox = new System.Windows.Forms.CheckBox();
             this.ShowChildrenCheckBox = new System.Windows.Forms.CheckBox();
-            this.LogTextBoxRich = new System.Windows.Forms.RichTextBox();
-            this.depGraph = new DepAnalyzer.ProjectsDepGraph();
-            this.depMatrix = new DepAnalyzer.ProjectsDepMatrix();
             this.ProjectTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -146,6 +145,14 @@ namespace DepAnalyzer
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Graph";
             // 
+            // depGraph
+            // 
+            this.depGraph.AutoScroll = true;
+            this.depGraph.Location = new System.Drawing.Point(6, 6);
+            this.depGraph.Name = "depGraph";
+            this.depGraph.Size = new System.Drawing.Size(830, 649);
+            this.depGraph.TabIndex = 1;
+            // 
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.Transparent;
@@ -157,6 +164,13 @@ namespace DepAnalyzer
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Matrix";
             // 
+            // depMatrix
+            // 
+            this.depMatrix.Location = new System.Drawing.Point(6, 6);
+            this.depMatrix.Name = "depMatrix";
+            this.depMatrix.Size = new System.Drawing.Size(830, 649);
+            this.depMatrix.TabIndex = 0;
+            // 
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.Color.Transparent;
@@ -165,7 +179,6 @@ namespace DepAnalyzer
             this.tabPage3.Controls.Add(this.label5);
             this.tabPage3.Controls.Add(this.ConfigTextBox);
             this.tabPage3.Controls.Add(this.BuildList);
-            this.tabPage3.Controls.Add(this.LogTextBox);
             this.tabPage3.Controls.Add(this.label4);
             this.tabPage3.Controls.Add(this.BuildButton);
             this.tabPage3.Controls.Add(this.label3);
@@ -175,6 +188,19 @@ namespace DepAnalyzer
             this.tabPage3.Size = new System.Drawing.Size(842, 661);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Build";
+            // 
+            // LogTextBoxRich
+            // 
+            this.LogTextBoxRich.BackColor = System.Drawing.SystemColors.Window;
+            this.LogTextBoxRich.DetectUrls = false;
+            this.LogTextBoxRich.HideSelection = false;
+            this.LogTextBoxRich.Location = new System.Drawing.Point(162, 35);
+            this.LogTextBoxRich.Name = "LogTextBoxRich";
+            this.LogTextBoxRich.ReadOnly = true;
+            this.LogTextBoxRich.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.LogTextBoxRich.Size = new System.Drawing.Size(674, 620);
+            this.LogTextBoxRich.TabIndex = 16;
+            this.LogTextBoxRich.Text = "";
             // 
             // LogCombo
             // 
@@ -269,19 +295,6 @@ namespace DepAnalyzer
             this.ProjectStatusImages.Images.SetKeyName(2, "success.png");
             this.ProjectStatusImages.Images.SetKeyName(3, "failed.png");
             // 
-            // LogTextBox
-            // 
-            this.LogTextBox.BackColor = System.Drawing.SystemColors.Window;
-            this.LogTextBox.HideSelection = false;
-            this.LogTextBox.Location = new System.Drawing.Point(162, 35);
-            this.LogTextBox.MaxLength = 10240000;
-            this.LogTextBox.Multiline = true;
-            this.LogTextBox.Name = "LogTextBox";
-            this.LogTextBox.ReadOnly = true;
-            this.LogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.LogTextBox.Size = new System.Drawing.Size(69, 620);
-            this.LogTextBox.TabIndex = 11;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -330,34 +343,6 @@ namespace DepAnalyzer
             this.ShowChildrenCheckBox.Text = "Show child nodes";
             this.ShowChildrenCheckBox.UseVisualStyleBackColor = true;
             // 
-            // LogTextBoxRich
-            // 
-            this.LogTextBoxRich.BackColor = System.Drawing.SystemColors.Window;
-            this.LogTextBoxRich.DetectUrls = false;
-            this.LogTextBoxRich.HideSelection = false;
-            this.LogTextBoxRich.Location = new System.Drawing.Point(237, 35);
-            this.LogTextBoxRich.Name = "LogTextBoxRich";
-            this.LogTextBoxRich.ReadOnly = true;
-            this.LogTextBoxRich.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.LogTextBoxRich.Size = new System.Drawing.Size(599, 620);
-            this.LogTextBoxRich.TabIndex = 16;
-            this.LogTextBoxRich.Text = "";
-            // 
-            // depGraph
-            // 
-            this.depGraph.AutoScroll = true;
-            this.depGraph.Location = new System.Drawing.Point(6, 6);
-            this.depGraph.Name = "depGraph";
-            this.depGraph.Size = new System.Drawing.Size(830, 649);
-            this.depGraph.TabIndex = 1;
-            // 
-            // depMatrix
-            // 
-            this.depMatrix.Location = new System.Drawing.Point(6, 6);
-            this.depMatrix.Name = "depMatrix";
-            this.depMatrix.Size = new System.Drawing.Size(830, 649);
-            this.depMatrix.TabIndex = 0;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -404,7 +389,6 @@ namespace DepAnalyzer
         private System.Windows.Forms.CheckBox ShowSingleCheckBox;
         private System.Windows.Forms.CheckBox ShowChildrenCheckBox;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TextBox LogTextBox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button BuildButton;
         private System.Windows.Forms.Label label3;

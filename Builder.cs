@@ -53,7 +53,6 @@ namespace DepAnalyzer
             int removeIndex = rtb.Rtf.LastIndexOf(searchText, StringComparison.InvariantCulture);
             if (removeIndex != -1)
                 rtb.Rtf = rtb.Rtf.Remove(removeIndex, removeText.Length);
-            rtb.Select(rtb.TextLength, 0);
         }
 
         public static string MergeRtf(string rtf1, string rtf2)
@@ -289,6 +288,9 @@ namespace DepAnalyzer
             logCombo.SelectedIndex = 0;
         }
 
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool LockWindowUpdate(IntPtr hWndLock);
+
         private void UpdateLog(object sender, EventArgs e)
         {
             if (log.IsDisposed)
@@ -307,19 +309,29 @@ namespace DepAnalyzer
             {
                 string appendText;
                 string fullText = proj.GetLogFormatted(out appendText);
-                if(e == null) // Full text update
-                {
-                    log.Rtf = fullText;
 
-                    log.Select(0, 0); // log.SelectionStart = 0;
-                }
-                else // Append text update
+                try
                 {
-                    log.AppendRtf(appendText);
+                    LockWindowUpdate(log.Handle);
 
-                    //log.SelectionStart = log.TextLength;
+                    if (e == null) // Full text update
+                    {
+                        log.Rtf = fullText;
+
+                        log.Select(0, 0);
+                    }
+                    else // Append text update
+                    {
+                        log.AppendRtf(appendText);
+
+                        log.Select(log.TextLength, 0);
+                    }
+                    log.ScrollToCaret();
                 }
-                log.ScrollToCaret();
+                finally
+                {
+                    LockWindowUpdate(IntPtr.Zero);
+                }
             }
         }
 
@@ -344,7 +356,6 @@ namespace DepAnalyzer
         public void AppendLog(string text)
         {
             buildProject.AppendLog(text);
-            //Program.form.UpdateBuildLog(text);
         }
 
         // Calls at build finish or abortion
