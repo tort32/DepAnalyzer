@@ -191,9 +191,12 @@ namespace DepAnalyzer
             DepProjects = new List<Project>();
             foreach (string guid in DepGUIDs)
             {
-                Project depProj = guidTable[guid];
-                depProj.Parent = this;
-                DepProjects.Add(depProj);
+                Project depProj;
+                if (guidTable.TryGetValue(guid, out depProj))
+                {
+                    depProj.Parent = this;
+                    DepProjects.Add(depProj);
+                }
             }
         }
 
